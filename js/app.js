@@ -3,7 +3,8 @@ const expenses = document.getElementById('expenses');
 const remaining = document.getElementById('remaining');
 const amount = document.getElementById('amount');
 
-const generateID = () => Math.floor(Math.random() * 100000);
+const generateID = () => Math.floor(Math.random() * 10000);
+
 
 const localStorageTransactions = JSON.parse(
     localStorage.getItem("transactions")
@@ -21,6 +22,8 @@ const list = document.getElementById('list');
 
 // Add transactions to DOM list
 function addTransactionDOM(transaction) {
+    // Get sign
+    const sign = transaction.amount < 0 ? '-' : '+';
     const item = document.createElement('div');
     // Add class based on value
     item.classList.add(transaction.amount < 0 ? 'minus' : 'plus');
@@ -42,18 +45,17 @@ const deleteTransaction = (id) => {
     init();
 }
 
-const edit
-
 // Init app
 function init() {
     list.innerHTML = '';
     // updateChanges()
     updateLocaleStorage();
     transactions.forEach(addTransactionDOM);
-    updateChart()
 }
 
 init();
+
+
 
 const updateChanges = () => {
     let total = 0;
@@ -76,6 +78,44 @@ const updateChanges = () => {
 }
 
 updateChanges()
+
+// Function to update the dropdown options based on the selected radio button
+function updateDropdownOptions() {
+    var categoryType = document.querySelector('input[name="categoryType"]:checked').value;
+    var categorySelect = document.getElementById('category');
+
+    // Clear existing options
+    categorySelect.innerHTML = '<option value="">Select Category</option>';
+
+    // Add new options based on the selected category type
+    if (categoryType === 'expense') {
+        for (var key in Expenses) {
+            if (Expenses.hasOwnProperty(key)) {
+                categorySelect.innerHTML += '<option value="' + key + '">' + Expenses[key] + '</option>';
+            }
+        }
+    } else if (categoryType === 'income') {
+        for (var key in Incomes) {
+            if (Incomes.hasOwnProperty(key)) {
+                categorySelect.innerHTML += '<option value="' + key + '">' + Incomes[key] + '</option>';
+            }
+        }
+    }
+}
+
+// Add event listener to the radio buttons
+var expenseRadio = document.getElementById('expenseRadio');
+var incomeRadio = document.getElementById('incomeRadio');
+
+expenseRadio.addEventListener('change', updateDropdownOptions);
+incomeRadio.addEventListener('change', updateDropdownOptions);
+
+
+
+// const handlesave=()=>{
+//     console.log("yes")
+//     console.log(amount.value)
+// }
 
 document.addEventListener('DOMContentLoaded', function() {
     // Create variables for all the fields
@@ -225,7 +265,6 @@ document.addEventListener('DOMContentLoaded', function() {
         categoryTypeRadios[0].checked = false;
         categoryTypeRadios[1].checked = false;
       updateLocaleStorage()
-      updateChanges()
       init()
     }
 

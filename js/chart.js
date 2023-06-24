@@ -1,9 +1,7 @@
-const updateChart=()=>{
-  console.log(transactions)
 var xValues=[]
 var yValues=[]
 transactions.forEach((transaction)=>
-transaction.type ===0 && xValues.push(transaction.category));
+transaction.type ===0 && xValues.push(transaction.text));
 transactions.forEach((transaction)=>
 transaction.type ===0 && yValues.push(transaction.amount)
 );
@@ -38,4 +36,3 @@ new Chart("myChart", {
     }
   }
 });
-}
